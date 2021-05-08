@@ -1,0 +1,65 @@
+\documentclass{report}
+
+\begin{document}
+
+\section{Introduction}
+
+The Beaglebone software has the following tasks:
+\begin{enumerate}
+\item Configure the arbitrary waveform generator to setup the TX and Bucking signals
+\item Configure the analogue board by toggling GPIO lines
+\item Recieve the raw data from the Analogue-Digital Converter
+\item Process this raw data - FFT / RMS and log the result
+\end{enumerate}
+
+The program logger.py should be looked at first.  This script performs all of the necessary calls to setup the EM sled and log raw data.
+
+\section{Languages and compiling}
+
+
+The software is written in a combination of Python, C, bash script and assembler.
+
+There is a Makefile that is responsible for compiling all of he C and Assembler software.  The compiled binaries are stored in the emsled/arm folder.
+
+
+The C code is compiled with the gnu g++ cpp compiler.
+
+The assembler code is compiled for the Programmable Realtime Units - sub microprocessors integrated into the beagleboard silicon.  These run independently of the main microprocessor.    The assembler code is compiled using the 'pasm' utility found in the AM335x\_PRU\_BeagleBone folder.  There are more examples of the PRU softawre in this folder.
+
+
+\section{Software structure}
+
+Example structures of sofware calls
+
+logger.py $\rightarrow$ \{ analogue\_IO.py, setup\_BB.py, spi\_awg.py, pructl.c, follower.c \}
+
+spi\_awg.py $\rightarrow$ spi\_awg.p 
+
+pructl.c $\rightarrow$ \{ pru00.p, pru01.p \} 
+
+\section{Software responsibilities}
+\begin{tabular}{|l|l|p{9cm}|} \hline
+Language & Filename & Responsibilities \\ \hline
+Bash  & add\_spi\_pru1\_overlay &  This is responsible for configuring the Beaglebone hardware interfaces \\ \hline
+Python & setup\_BB.py & Just calls add\_spi\_pru1\_overlay if necessary. \\ \hline
+Python & analogue\_IO.py &  This script is responsible for setting up and controlling the GPIO that are connected to the analogue board. There are currently 3 control lines, TX on, and 2 TX gain control bits \\ \hline
+Python & iterate.py & A simple iterative search of phase and amplitude space.  This is under development.  It is intended for calibrating the bucking control.  \\ \hline
+Python & logger.py &  This script does all that is necessary to setup the  Beaglebone, the ADC and the AWG and then logs the raw data to a file.  Something similar to this should be the template for autonomous operations of the setup. \\ \hline
+Python & spi\_awg.py &  This is for configuring the AWG over a bit-banged SPI bus created by PRU1.   This cannot be used at the same time as the ADC, as that uses PRU1 as well.  \\ \hline
+
+C & mcf.cpp & //MIscellaneous utilities script \\ \hline
+C & mio.cpp & // Memory mapping for the PRU0 and PRU1 - this is how the PRU's talk to the main onboard beaglebone memory \\ \hline
+C & follower.c & // This program listens to the output of the ADC (via PRU0 and PRU1) and dumps the raw output to the stdout. \\ \hline
+C & follower\_fft.c & // This code is the same as the follower.c, however it runs an FFT on the data from the ADC in real-time, and displays the output on a gnuplot graph. \\ \hline
+C & follower\_rms.c &  This code is the same as the follower.c, however it  performs a root-mean-square (RMS) calculation on blocks of 'samples\_to\_rms' size. \\ \hline
+C & pructl.c & // This software is responsible for setting up the PRU0 and PRU01 interfaces for the ADC \\ \hline
+Assembler & PRU00.p and PRU01.p & // PRU01.p is responsible for reading the ADC data, and putting it on a shared bus that PRU00.p can read.  PRU00.p then copies this data to the Beaglebone main memory so that the ARM processor can read it. \\ \hline
+Python & awg.py &  This script should now be redundant.  It for talking to the AWG (arbitrary waveform generator) via the Beagleboards SPI bus However this SPI bus is already in use by the snow radar so we've replaced this script with spi\_awg - a bit-banged SPI bus \\ \hline
+\end{tabular}
+
+
+
+\end{document}
+
+
+ 

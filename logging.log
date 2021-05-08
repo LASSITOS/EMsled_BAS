@@ -1,0 +1,11 @@
+INFO:root:[LOGGER] Starting the AWG
+INFO:root:[LOGGER] Setting up analogue amplification
+INFO:root:[LOGGER] Loading ADC PRU code
+INFO:root:[LOGGER] TX Power on and start sampling
+INFO:root:Finished
+INFO:root:['Stopping data logging after : ', '1.0', ' s']
+INFO:root:[LOGGER] Starting the AWG
+INFO:root:[LOGGER] Setting up analogue amplification
+INFO:root:[LOGGER] Loading ADC PRU code
+INFO:root:[LOGGER] TX Power on and start sampling
+INFO:root:Finished

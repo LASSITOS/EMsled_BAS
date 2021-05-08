@@ -1,0 +1,58 @@
+/* Device Tree Overlay for enabling the pins that are used in the Chapter 13
+* additional material example on High-Speed Analog to Digital Conversion (ADC)
+* using the PRU-ICSS. This overlay is based on the BB-PRU-01 overlay
+* Written by Derek Molloy for the book "Exploring BeagleBone: Tools and
+* Techniques for Building with Embedded Linux" by John Wiley & Sons, 2014
+* ISBN 9781118935125. Please see the file README.md in the repository root
+* directory for copyright and GNU GPLv3 license information.
+
+* http://kilobaser.com/blog/2014-07-28-beaglebone-black-devicetreeoverlay-generator
+*/
+/dts-v1/;
+/plugin/;
+ 
+/ {
+   compatible = "ti,beaglebone", "ti,beaglebone-black", "ti,beaglebone-green";
+ 
+   part-number = "EBB-PRU-ADC";
+   version = "00A0";
+ 
+   /* This overlay uses the following resources */
+   exclusive-use =
+          "P8.27", "P8.28", "P8.29", "P8.39", "P8.42", "P8.43", "P8.44", "P8.46", "pru1";
+
+
+    fragment@0 {
+        target = <&am33xx_pinmux>;
+        __overlay__ {
+            bs_pinmode_P8_42_0x36: pinmux_bs_pinmode_P8_42_0x36 {
+                pinctrl-single,pins = <
+                0x0bc 0x2e  // CLK Input    P8_40 pr1_pru1_pru_r31_7
+                0x0b8 0x2e  // DATA Input   P8_39 pr1_pru1_pru_r31_6 
+                0x0b4 0x2e  // FSYNC Input  P8_42 pr1_pru1_pru_r31_5,
+                0x0a0 0xd  // DEBUG output P8_45 pr1_pru1_pru_r30_0,   0x0d
+                0x0a4 0x5  // CLK OUTPUT   P8_46 pr1_pru1_pru_r30_1,
+                0x0e0 0xd // SPI CLK output p8_27 pru1_r30_8,
+                0x0e4 0xd // SPI Data output p8_29 pru1_r30_9,
+                0x0e8 0x2e // SPI Data input p8_28 pru1_r31_10
+                0x158 0x07 //ADC 5V power supply, p9_18 GPIO
+			>;
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&ocp>;
+        __overlay__ {
+            bs_pinmode_P8_42_0x36_pinmux {
+                compatible = "bone-pinmux-helper";
+                status = "okay";
+                pinctrl-names = "default";
+                pinctrl-0 = <&bs_pinmode_P8_42_0x36>;
+            };
+        };
+    };
+
+
+
+}; 

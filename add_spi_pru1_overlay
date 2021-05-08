@@ -1,0 +1,9 @@
+# This is responsible for configuring the Beaglebone hardware interfaces
+
+
+dtc -O dtb -o /lib/firmware/SPI-OVERLAY-PRU1-00A0.dtbo -b 0 -@ SPI-OVERLAY-PRU1.dts
+# echo -8 > /sys/devices/bone_capemgr.9/slots
+echo SPI-OVERLAY-PRU1 > /sys/devices/bone_capemgr.9/slots
+cat /sys/devices/bone_capemgr.9/slots
+echo BB-BONE-PRU-01 > /sys/devices/bone_capemgr.9/slots
+modprobe uio_pruss
