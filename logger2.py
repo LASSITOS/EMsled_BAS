@@ -29,8 +29,6 @@ def startup():
 
   setup_BB.setup_BB_slots()
   
-  if config.hardware['AWGon']==True:
-     None
   AWG.start(**config.hardware['AWG']) # start AWG
 
   args=config.test_params.copy()
