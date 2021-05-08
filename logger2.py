@@ -30,7 +30,8 @@ def startup():
   setup_BB.setup_BB_slots()
   
   if config.hardware['AWGon']==True:
-    AWG.start(**config.hardware['AWG']) # start AWG
+     None
+  AWG.start(**config.hardware['AWG']) # start AWG
 
   args=config.test_params.copy()
   args.update(config.hardware['AWG'])
@@ -82,6 +83,7 @@ def finish():
 
   analogue_IO.disable() # disable TX
   AWG.finish() # free GPIO ports
+  logging.info("[LOGGER] The End")
   exit(0)
 
 def check_input(argv):
