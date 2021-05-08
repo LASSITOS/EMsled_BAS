@@ -19,7 +19,7 @@ import logging
 
 def signal_handler(signum, frame):
   if signum == signal.SIGINT:
-    print "Ctrl-C received, exitting"
+    print "Ctrl-C received, exiting"
     finish()
 
 def startup():
