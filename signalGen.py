@@ -91,7 +91,7 @@ def check_input(argv):
         logging.info(['Stopping data logging after : ', str(arg),' s'] )
         
       elif opt in ("-o", "--AWGon"):
-	if int(arg)==1:
+        if int(arg)==1:
             config.hardware["AWGon"]= True
             logging.info('Transmitter signal set to on' )
         else:
@@ -102,7 +102,7 @@ def check_input(argv):
 
 if __name__ == "__main__":
     
-    duration =0
+    duration =10  # send signla for 10 seconds if not specified
     
     # setup log and logfile
     logging.basicConfig(level=logging.INFO, stream=sys.stdout,)# filename='logging.log',)
