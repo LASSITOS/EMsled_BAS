@@ -12,7 +12,7 @@ import analogue_IO
 import setup_BB
 
 import time # For testing only
-import config_sigGen
+import config_sigGen as config
 import numpy as np
 import logging
 
@@ -61,7 +61,6 @@ def finish():
   exit(0)
 
 def check_input(argv):
-    global duration
     # check input arguments
     try:
       opts, args = getopt.getopt(argv,"hf:t:o:",["rawfile=","maxtime=","AWGon=" ])
@@ -87,7 +86,7 @@ def check_input(argv):
                 raise ValueError()
         except ValueError:
             raise ValueError('"--maxtime" (-t) must be a positive number ')
-        duration= arg
+        config.test_params["duration"]= arg
         logging.info(['Stopping data logging after : ', str(arg),' s'] )
         
       elif opt in ("-o", "--AWGon"):
@@ -102,7 +101,6 @@ def check_input(argv):
 
 if __name__ == "__main__":
     
-    duration =10  # send signla for 10 seconds if not specified
     
     # setup log and logfile
     logging.basicConfig(level=logging.INFO, stream=sys.stdout,)# filename='logging.log',)
@@ -112,7 +110,7 @@ if __name__ == "__main__":
     #  start signal generator and data logger
     signal.signal(signal.SIGINT, signal_handler)
     startup()
-    time.sleep(duration)
+    time.sleep(config.test_params["duration"])
     setPhase(150)
     time.sleep(0.5)
     finish()

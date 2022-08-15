@@ -8,7 +8,9 @@ test_params = dict(
   bc3_dcgain=0.0,       #Bucking coil 3 DC gain. Valid values are between ]-2.0 and +2.0[
   bc1_ps=0.0,           #Bucking coil 1 phase shift in degrees.
   bc2_ps=0.0,           #Bucking coil 2 phase shift in degrees.
-  bc3_ps=0.0            #Bucking coil 3 phase shift in degrees.
+  bc3_ps=0.0,            #Bucking coil 3 phase shift in degrees.
+  
+  duration =10,     # produce signal for 10 seconds if not specified in function call
 )
 
 hardware = dict(
@@ -20,7 +22,9 @@ hardware = dict(
   ),
 
   AWGon=True,		# set AWG and signal generation on. Default should be True
-
+  
+  
+  
   IO = dict(
     gain=3              #Analog gain, integer in [0, 1, 2, 3]
   ),
